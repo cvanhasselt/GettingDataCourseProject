@@ -16,11 +16,11 @@ These five steps will be accomplished via the process described below. Readers
 First, we read in the data, label set, and subject codes for the test data. A similar block
 of code is used to read in the train data.
 
-'''
+```
 xtestdata    <- read.table("./test/x_test.txt")         # data
 ytestdata    <- read.table("./test/y_test.txt")         # labels
 testsubjects <- read.table("./test/subject_test.txt")   # subjects
-'''
+```
 
 I then merge the two raw data tables together, row-wise.  Also, the activity label codes and subject
 codes are merged.
