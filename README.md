@@ -1,4 +1,7 @@
-# Overall Process
+# Getting and Cleaning Data Course Project
+==========================================
+
+## Overall Process
 
 The five essential tasks to complete the Course Project are as follows.
 
@@ -9,11 +12,12 @@ The five essential tasks to complete the Course Project are as follows.
  5. Creates a second, independent tidy data set with the average of each
     variable for each activity and each subject.
 
-These five steps will be accomplished via the process described below. Readers
+These five steps will be accomplished via the process described below. Readers should also
+examine the codebook, and the full comments in the run_analysis.R file.
 
 ## 1. -- Merge training and test sets to create one data set.
 
-First, we read in the data, label set, and subject codes for the test data. A similar block
+First, I read in the data, label set, and subject codes for the test data. A similar block
 of code is used to read in the train data.
 
 ```
@@ -24,15 +28,15 @@ testsubjects <- read.table("./test/subject_test.txt")   # subjects
 
 I then merge the two raw data tables together, row-wise.  Also, the activity label codes and subject
 codes are merged.
-'''
-allActivityData <- rbind(xtestdata,xtraindata)
+```
+yData <- rbind(xtestdata,xtraindata)
 allLabelSets    <- rbind(ytestdata,ytraindata)
 allSubjectCodes <- rbind(testsubjects,trainsubjects)
-'''
-#--------------------------------------------------------------------------------------------
-# 2. -- Extracts only the measurements on the mean and standard deviation for each measurement.
+```
 
-# Read in the feature names from the features.txt file.  
+## 2. -- Extracts only the measurements on the mean and standard deviation for each measurement.
+
+First, ead in the feature names from the features.txt file.  
 featurenames   <- read.table("./features.txt")
 
 # identify all the features that are either standard deviations or means of measurements.
