@@ -20,7 +20,7 @@ The five essential tasks to complete the Course Project are as follows.
 These five steps will be accomplished via the process described below. Readers should also
 examine the codebook, and the full comments in the run_analysis.R file.
 
-## 1. Merge training and test sets to create one data set.
+### 1. Merge training and test sets to create one data set.
 
 First, I read in the data, label set, and subject codes for the test data. A similar block
 of code is used to read in the train data.
@@ -42,7 +42,7 @@ allSubjectCodes <- rbind(testsubjects,trainsubjects)
 Note that I've taken car to always merge in the order test, train.  It is important to do this consistently
 to maintain the row-order of the various data files.
 
-## 2. Extracts only the measurements on the mean and standard deviation for each measurement.
+### 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 
 First, I read in the feature names from the features.txt file.  
 ```
@@ -59,7 +59,7 @@ Finally, I  remove columns that are not means or standard deviation features, ba
 filteredActivityData <- allActivityData[, which(meanandstddevfeatures == TRUE)]
 ```
 
-## 3. Uses descriptive activity names to name the activities in the data set.
+### 3. Uses descriptive activity names to name the activities in the data set.
 
 I read the set of activity labels from the activity_labels.txt file, then convert the 
 labe codes to a factor that can be then transformed into a text string.  I don't worry about underscores, because
@@ -78,7 +78,7 @@ Finally, I bind the subject and activity to the filteredActivityData dataset.
 filteredActivityData <- cbind(subject,activity,filteredActivityData)
 ```
 
-## 4. Appropriately label the data set with descriptive variable names. 
+### 4. Appropriately label the data set with descriptive variable names. 
 
 In this step, the mean and standard deviation feature names are cleaned of hyphens and parentheses, and then attached as column names to the data set.  The previously used meanandstddevfeatures true/false vector is used to capture the names of all the mean and standard deviation features.
 ```
@@ -102,20 +102,20 @@ write.table(filteredActivityData, "dataset1.txt", sep="\t")
 ```
 
 
-# 5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+### 5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 (*note:*  This is where my comfort level with this class seriously falls apart.)
 
-Using the reshape2 library, use the melt function to collapse the filteredActivityData dataframe.
+Using the reshape2 library, use the melt function to collapse the filteredActivityData dataframe.  I create a molten
+dataset with the melt function, and then use the dcast function to collapse the molten set into a new 
+collapsed and tidy data frame.  Finally, I write the tidy dataset to both txt and csv files.
+
+```
 library(reshape2)
-
-# create the molten data set
 molten <- melt(filteredActivityData,id.vars=c("subject","activity"))
-
-# cast the molten data set into a collapsed tidy dataset
 tidy <- dcast(molten,subject + activity ~ variable,mean)
-
-# write the dataset to a file
 write.table(tidy, "dataset2.txt", sep="\t")
+```
+
 
 
