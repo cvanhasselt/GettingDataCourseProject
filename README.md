@@ -20,7 +20,7 @@ The five essential tasks to complete the Course Project are as follows.
 These five steps will be accomplished via the process described below. Readers should also
 examine the codebook, and the full comments in the run_analysis.R file.
 
-## 1. -- Merge training and test sets to create one data set.
+## 1. Merge training and test sets to create one data set.
 
 First, I read in the data, label set, and subject codes for the test data. A similar block
 of code is used to read in the train data.
@@ -94,20 +94,19 @@ cleaner <- function(featurename) {
 filteredfeatures <- sapply(filteredfeatures,cleaner)
 ```
 
-# Finally, add the filteredfeature names to the filteredActivityData set. The first column name is
-# skipped, since it already has a name, provided in step 3 above.
+Finally, add the filteredfeature names to the filteredActivityData set. The first column name is skipped, since it already has a name, provided in step 3 above.  Then, I write the final dataset to a CSV file, and as a text file
+```
 names(filteredActivityData)[3:ncol(filteredActivityData)] <- filteredfeatures
-
-# write the final dataset to a CSV file, and as a text file
 write.csv(filteredActivityData,file="dataset1.csv")
 write.table(filteredActivityData, "dataset1.txt", sep="\t")
+```
 
-#--------------------------------------------------------------------------------------------
-# 5.-- Creates a second, independent tidy data set with the average of each
-#      variable for each activity and each subject.  (note:  This is where my comfort level
-#      with this class seriously falls apart.)
 
-# using the reshape2 library, use the melt function to collapse the filteredActivityData dataframe.
+# 5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+(*note:*  This is where my comfort level with this class seriously falls apart.)
+
+Using the reshape2 library, use the melt function to collapse the filteredActivityData dataframe.
 library(reshape2)
 
 # create the molten data set
