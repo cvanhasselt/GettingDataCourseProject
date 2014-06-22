@@ -1,5 +1,10 @@
 # Getting and Cleaning Data Course Project
-==========================================
+
+The Course Project uses data from this URL: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+
+To reproduce the steps described below, and to use the run_analysis.R file, you need to download the
+above zip file, decompress the file, and have the run_analysis.R file in the top level folder of the unzipped 
+package.
 
 ## Overall Process
 
@@ -34,19 +39,25 @@ allLabelSets    <- rbind(ytestdata,ytraindata)
 allSubjectCodes <- rbind(testsubjects,trainsubjects)
 ```
 
+Note that I've taken car to always merge in the order test, train.  It is important to do this consistently
+to maintain the row-order of the various data files.
+
 ## 2. -- Extracts only the measurements on the mean and standard deviation for each measurement.
 
-First, ead in the feature names from the features.txt file.  
+First, I read in the feature names from the features.txt file.  
+```
 featurenames   <- read.table("./features.txt")
-
-# identify all the features that are either standard deviations or means of measurements.
-# The following code identifies a vector of boolean values that correspond to the means and
-# standard deviation measures.
+```
+Then, I identify all the features that are either standard deviations or means of measurements, via
+a grep transformation.  I've assumed that the measures of interest are those containing either a "-std()" or
+a "-mean()" text string within the original feature names.
+```
 meanandstddevfeatures  <- grepl("(-std\\(\\)|-mean\\(\\))",featurenames$V2)
-
-# remove columns that are not means or std. deviation features
+```
+Finally, I  remove columns that are not means or standard deviation features, based on the list identified above.
+```
 filteredActivityData <- allActivityData[, which(meanandstddevfeatures == TRUE)]
-
+``
 #--------------------------------------------------------------------------------------------
 # 3. -- Uses descriptive activity names to name the activities in the data set.
 
