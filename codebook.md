@@ -1,4 +1,5 @@
 # Getting and Cleaning Data Course Project
+## Codebook
 
 The Course Project uses data from this URL: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
