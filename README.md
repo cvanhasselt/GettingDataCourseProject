@@ -42,7 +42,7 @@ allSubjectCodes <- rbind(testsubjects,trainsubjects)
 Note that I've taken car to always merge in the order test, train.  It is important to do this consistently
 to maintain the row-order of the various data files.
 
-## 2. -- Extracts only the measurements on the mean and standard deviation for each measurement.
+## 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 
 First, I read in the feature names from the features.txt file.  
 ```
@@ -57,41 +57,42 @@ meanandstddevfeatures  <- grepl("(-std\\(\\)|-mean\\(\\))",featurenames$V2)
 Finally, I  remove columns that are not means or standard deviation features, based on the list identified above.
 ```
 filteredActivityData <- allActivityData[, which(meanandstddevfeatures == TRUE)]
-``
-#--------------------------------------------------------------------------------------------
-# 3. -- Uses descriptive activity names to name the activities in the data set.
+```
 
-# Read the set of activity labels from the txt file
+## 3. Uses descriptive activity names to name the activities in the data set.
+
+I read the set of activity labels from the activity_labels.txt file, then convert the 
+labe codes to a factor that can be then transformed into a text string.  I don't worry about underscores, because
+I don't find that to be a "untidy" distraction.
+```
 activityLabels  <- read.table("./activity_labels.txt")
-
-# transform the allLabelSets from integer codes to factors
 activity <- as.factor(allLabelSets$V1)
-
-# transform the label factors into a vector of human readable activity descriptions
 levels(activity) <- activityLabels$V2
-
-# transform the subject codes to factors, as they will be used as factors later on.
+```
+Next, I transform the subject codes to factors, for later use.
+```
 subject <- as.factor(allSubjectCodes$V1)
-
-# bind as a column the allLabels vector to the dataset
+```
+Finally, I bind the subject and activity to the filteredActivityData dataset.
+```
 filteredActivityData <- cbind(subject,activity,filteredActivityData)
+```
 
-#--------------------------------------------------------------------------------------------
-# 4. -- Appropriately label the data set with descriptive variable names.  In this step, the
-#       mean and standard deviation feature names are cleaned of hyphens and parentheses, and 
-#       then attached as column names to the data set.
+## 4. Appropriately label the data set with descriptive variable names. 
 
-# First, the previously used meanandstddevfeatures true/false vector is used to captue the 
-# names of all the mean and std. dev. features.
+In this step, the mean and standard deviation feature names are cleaned of hyphens and parentheses, and then attached as column names to the data set.  The previously used meanandstddevfeatures true/false vector is used to capture the names of all the mean and standard deviation features.
+```
 filteredfeatures <- (cbind(featurenames,meanandstddevfeatures)[meanandstddevfeatures==TRUE,])$V2
+```
 
-# Next, a gsub regular expression replacement is used to clean the parenthesese and hyphens, and
-# make the name lowercase. The function cleaner does the cleaning, and sapply is used to apply
-# the function to all desired featurenames.
+Using a gsub regular expression replacement I clean the parenthesese and hyphens, and make the name lowercase. The function cleaner does the cleaning, and sapply is used to apply the function to all desired featurenames.
+
+```
 cleaner <- function(featurename) {
     tolower(gsub("(\\(|\\)|\\-)","",featurename))
 }
 filteredfeatures <- sapply(filteredfeatures,cleaner)
+```
 
 # Finally, add the filteredfeature names to the filteredActivityData set. The first column name is
 # skipped, since it already has a name, provided in step 3 above.
