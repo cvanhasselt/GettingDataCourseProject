@@ -4,7 +4,10 @@ The Course Project uses data from this URL: https://d396qusza40orc.cloudfront.ne
 
 To reproduce the steps described below, and to use the run_analysis.R file, you need to download the
 above zip file, decompress the file, and have the run_analysis.R file in the top level folder of the unzipped 
-package.
+package.  
+
+The codebook for this project is available within this repository:
+https://github.com/cvanhasselt/GettingDataCourseProject/blob/master/codebook.md 
 
 ## Overall Process
 
